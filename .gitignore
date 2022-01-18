@@ -3,8 +3,6 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
-.env.backup
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
@@ -13,3 +11,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/.docker/mariadb/datamysql
+

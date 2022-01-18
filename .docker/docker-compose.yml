@@ -1,0 +1,80 @@
+version: "3.3"
+
+services:
+  mariadb:
+    image: mariadb:10.4
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb/charset.cnf:/etc/mysql/conf.d/charset.cnf
+      - ./mariadb/datamysql:/var/lib/mysql
+    networks:
+      - apscreativas-laravel-devkit
+    domainname: mariadb
+    hostname: mariadb
+    env_file:
+      - ./.env
+    restart: on-failure
+  cli:
+    build:
+      context: ./
+      dockerfile: cli.dockerfile
+    volumes:
+      - ./../:/var/www/html
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./php/conf.d/session.ini:/usr/local/etc/php/conf.d/session.ini
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts
+      - ${SSH_AUTH_SOCK}:/ssh-auth.sock
+    working_dir: /var/www/html
+    networks:
+      - apscreativas-laravel-devkit
+    env_file:
+      - ./.env
+  app:
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    volumes:
+      - ./../:/var/www/html
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./php/conf.d/session.ini:/usr/local/etc/php/conf.d/session.ini
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts
+      - ${SSH_AUTH_SOCK}:/ssh-auth.sock
+    working_dir: /var/www/html
+    networks:
+      - apscreativas-laravel-devkit
+    env_file:
+      - ./.env
+  web:
+    build:
+      context: ./
+      dockerfile: web.dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./../:/var/www/html
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./php/conf.d/session.ini:/usr/local/etc/php/conf.d/session.ini
+    working_dir: /var/www/html
+    networks:
+      apscreativas-laravel-devkit:
+        aliases:
+          - laravel.localhost
+    env_file:
+      - ./.env
+  node:
+    build:
+      context: ./
+      dockerfile: node.dockerfile
+    ports: 
+      - "8090:8080"
+    volumes:
+      - ./../:/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - apscreativas-laravel-devkit
+
+networks:
+  apscreativas-laravel-devkit:
+    driver: bridge
