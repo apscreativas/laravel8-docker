@@ -3,7 +3,7 @@
 
 ## Información 
 
-Este es un Dockerizado de Laravel + Apache + MariaDB , el cual esta listo para poder lanzar un proyecto iniciar en Laravel 8.49
+Este es un Dockerizado de Laravel + NginX + MariaDB , el cual esta listo para poder lanzar un proyecto iniciar en Laravel 8.80
 El Stack esta definido de la siguiente manera :  PHP 8.1.1 // MariaDB  // NginX
 
 ## Requerimientos
